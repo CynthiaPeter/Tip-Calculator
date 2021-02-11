@@ -10,7 +10,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.brown[300],
+      backgroundColor: Color(0XFF22222E),
       body: Center(
           child: SizedBox.fromSize(
         size: Size(200, 56), // button width and height
@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
           child: Material(
             elevation: 4,
             borderRadius: BorderRadius.circular(20),
-            color: Colors.brown[700], // button color
+            color: Colors.white12, // button color
             child: InkWell(
               splashColor: Colors.brown, // splash color
               onTap: () {

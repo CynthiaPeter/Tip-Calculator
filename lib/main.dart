@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tip_calculator/Ui/calculatorpage.dart';
 import 'Ui/homepage.dart';
 
 void main() {
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: CalculatorUi(),
     );
   }
 }
