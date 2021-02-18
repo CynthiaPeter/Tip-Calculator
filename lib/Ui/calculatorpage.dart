@@ -57,6 +57,7 @@ class _CalculatorUiState extends State<CalculatorUi> {
                           Container(
                             width: MediaQuery.of(context).size.width * 0.4,
                             child: TextField(
+                              
                               keyboardType: TextInputType.numberWithOptions(
                                   decimal: true),
                               style: TextStyle(
@@ -109,8 +110,8 @@ class _CalculatorUiState extends State<CalculatorUi> {
                                   _editableTipPercentage = tipValue;
 
                                   calculateTotalTip(
-                                      _editableBill, _editableTipPercentage);
-                                  calculateTotalBill(_editableBill, totalTip);
+                                   _totalBill, _editableTipPercentage, _editableBill, );
+                                  // calculateTotalBill(_editableBill, totalTip);
                                 });
                               },
                             )
@@ -126,7 +127,7 @@ class _CalculatorUiState extends State<CalculatorUi> {
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.8,
-                height: MediaQuery.of(context).size.height * 0.3,
+               // height: MediaQuery.of(context).size.height * 0.3,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.transparent,
@@ -203,7 +204,7 @@ class _CalculatorUiState extends State<CalculatorUi> {
                   borderRadius: BorderRadius.circular(100),
                 ),
                 onPressed: () {},
-                child: Text("Make Payment"),
+                child: Text("Make Payment", style: TextStyle(color: Color(0XFF22222E),),),
               ),
             )
           ],
@@ -216,16 +217,18 @@ class _CalculatorUiState extends State<CalculatorUi> {
   calculateTotalTip(
     double totalBill,
     double editableTipPercentage,
+    double editableBill
   ) {
     setState(() {
       totalTip = (totalBill * editableTipPercentage) / 100;
+      _totalBill = editableBill + totalTip;
     });
   }
 
-  calculateTotalBill(double editableBill, double totalTip) {
-    setState(() {
-      _totalBill = _editableBill + totalTip;
-    });
-  }
+  // calculateTotalBill(double editableBill, double totalTip) {
+  //   setState(() {
+  //     _totalBill = _editableBill + totalTip;
+  //   });
+  // }
 
 }
