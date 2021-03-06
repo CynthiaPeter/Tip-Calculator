@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import './confirmationpage.dart';
+import 'package:intl/intl.dart';
 
 class CalculatorUi extends StatefulWidget {
   @override
@@ -6,9 +8,10 @@ class CalculatorUi extends StatefulWidget {
 }
 
 class _CalculatorUiState extends State<CalculatorUi> {
+  final oCcy = NumberFormat("#,##0.00", "en_US");
   double _editableTipPercentage = 0.0;
   double _editableBill = 0.0;
-  double _totalBill = 0.0;
+  String _totalBill = '0.00';
   double totalTip = 0.0;
 
   @override
@@ -57,7 +60,6 @@ class _CalculatorUiState extends State<CalculatorUi> {
                           Container(
                             width: MediaQuery.of(context).size.width * 0.4,
                             child: TextField(
-                              
                               keyboardType: TextInputType.numberWithOptions(
                                   decimal: true),
                               style: TextStyle(
@@ -71,7 +73,7 @@ class _CalculatorUiState extends State<CalculatorUi> {
                                 hintText: ('\$0.0'),
                                 hintStyle: TextStyle(
                                   fontSize: 36,
-                                  color: Color.fromRGBO(255, 255, 255, 0.55),
+                                  color: Color.fromRGBO(255, 255, 255, 0.80),
                                 ),
                               ),
                               onChanged: (String value) {
@@ -110,8 +112,11 @@ class _CalculatorUiState extends State<CalculatorUi> {
                                   _editableTipPercentage = tipValue;
 
                                   calculateTotalTip(
-                                   _totalBill, _editableTipPercentage, _editableBill, );
-                                  // calculateTotalBill(_editableBill, totalTip);
+                                    double.tryParse(_totalBill),
+                                    _editableTipPercentage,
+                                    //_editableBill,
+                                  );
+                                  calculateTotalBill(_editableBill, totalTip);
                                 });
                               },
                             )
@@ -127,7 +132,7 @@ class _CalculatorUiState extends State<CalculatorUi> {
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.8,
-               // height: MediaQuery.of(context).size.height * 0.3,
+                // height: MediaQuery.of(context).size.height * 0.3,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.transparent,
@@ -203,8 +208,31 @@ class _CalculatorUiState extends State<CalculatorUi> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100),
                 ),
-                onPressed: () {},
-                child: Text("Make Payment", style: TextStyle(color: Color(0XFF22222E),),),
+                onPressed: () {
+                  if (_editableTipPercentage == 0.0 &&
+                      _editableBill == 0.0 &&
+                      totalTip == 0.0) {
+                    final snackBar = SnackBar(
+                        content: Text('It is empty!',
+                            style: TextStyle(color: Colors.red, fontSize: 16)));
+
+                    // Find the ScaffoldMessenger in the widget tree
+                    // and use it to show a SnackBar.
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ConfirmationPage()),
+                    );
+                  }
+                },
+                child: Text(
+                  "Make Payment",
+                  style: TextStyle(
+                    color: Color(0XFF22222E),
+                  ),
+                ),
               ),
             )
           ],
@@ -217,18 +245,19 @@ class _CalculatorUiState extends State<CalculatorUi> {
   calculateTotalTip(
     double totalBill,
     double editableTipPercentage,
-    double editableBill
+    // double editableBill
   ) {
     setState(() {
-      totalTip = (totalBill * editableTipPercentage) / 100;
-      _totalBill = editableBill + totalTip;
+      // _totalBill = editableBill + totalTip;
+      totalTip = (_editableBill * editableTipPercentage) / 100;
     });
   }
 
-  // calculateTotalBill(double editableBill, double totalTip) {
-  //   setState(() {
-  //     _totalBill = _editableBill + totalTip;
-  //   });
-  // }
+  calculateTotalBill(double editableBill, double totalTip) {
+    var bill = _editableBill + totalTip;
 
+    setState(() {
+      _totalBill = oCcy.format(bill);
+    });
+  }
 }
